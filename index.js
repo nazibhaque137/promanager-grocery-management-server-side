@@ -21,7 +21,7 @@ async function run() {
         await client.connect();
 
         const itemCollection = client.db("warehouseManagement").collection("item");
-        //const myItemsCollection = client.db("warehouseManagement").collection("myItems");
+        const reviewCollection = client.db("warehouseManagement").collection("review");
 
 
         app.get('/item', async (req, res) => {
@@ -52,8 +52,6 @@ async function run() {
         });
 
 
-        // MyItems Collection API
-
         app.get('/my-items', async (req, res) => {
             const email = req.query.email;
             const query = {email: email};
@@ -67,9 +65,25 @@ async function run() {
             const result = await itemCollection.insertOne(newMyItem);
             res.send(result);
         });
-       
+
+
+        app.get('/review', async (req, res) => {
+            const query = {};
+            const cursor = reviewCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        })
+
+        app.get('/review/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const review = await reviewCollection.findOne(query);
+            res.send(review);
+        });
     }
 
+
+    
     finally {
     }
 }
