@@ -23,6 +23,8 @@ async function run() {
         const itemCollection = client.db("warehouseManagement").collection("item");
         const reviewCollection = client.db("warehouseManagement").collection("review");
 
+        //const myItemCollection = client.db("warehouseManagement").collection("myItem");
+
 
         app.get('/item', async (req, res) => {
             const query = {};
@@ -51,18 +53,23 @@ async function run() {
             res.send(result);
         });
 
+        
+        app.put("/item/:id", async (req, res) => {
+            const id = req.params.id;
+            const updateItemData = req.body;
+            const filter = { _id: ObjectId(id) };
+            const option = { upsert: true };
+            const updateItemDoc = {
+                $inc: {
+                    quantity: updateItemData.quantity-1,
+                },
+            };
+            const result = await itemCollection.updateOne(
+                filter,
+                option,
+                updateItemDoc
+            );
 
-        app.get('/my-items', async (req, res) => {
-            const email = req.query.email;
-            const query = {email: email};
-            const cursor = itemCollection.find(query);
-            const myItems = await cursor.toArray();
-            res.send(myItems);
-        })
-
-        app.post('/my-items', async (req, res) => {
-            const newMyItem = req.body;
-            const result = await itemCollection.insertOne(newMyItem);
             res.send(result);
         });
 
@@ -80,6 +87,7 @@ async function run() {
             const review = await reviewCollection.findOne(query);
             res.send(review);
         });
+        
     }
 
 
