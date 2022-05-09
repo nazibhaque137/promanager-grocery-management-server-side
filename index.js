@@ -23,9 +23,6 @@ async function run() {
         const itemCollection = client.db("warehouseManagement").collection("item");
         const reviewCollection = client.db("warehouseManagement").collection("review");
 
-        //const myItemCollection = client.db("warehouseManagement").collection("myItem");
-
-
         app.get('/item', async (req, res) => {
             const query = {};
             const cursor = itemCollection.find(query);
