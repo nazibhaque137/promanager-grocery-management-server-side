@@ -56,18 +56,18 @@ async function run() {
         
         app.put("/item/:id", async (req, res) => {
             const id = req.params.id;
-            const updateItemData = req.body;
+            const newItem = req.body;
             const filter = { _id: ObjectId(id) };
             const option = { upsert: true };
-            const updateItemDoc = {
-                $inc: {
-                    quantity: updateItemData.itemQuantity,
+            const updateItem = {
+                $set: {
+                    quantity: newItem.quantity,
                 },
             };
             const result = await itemCollection.updateOne(
                 filter,
                 option,
-                updateItemDoc
+                updateItem
             );
 
             res.send(result);
