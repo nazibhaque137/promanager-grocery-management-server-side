@@ -95,9 +95,9 @@ run().catch(console.dir);
 
 
 app.get('/', async (req, res) => {
-    res.send('Warehouse Management Server running');
+    res.send('Manufacturer Website Server running');
 })
 
 app.listen(port, () => {
-    console.log(`Warehouse Management Server is Listening on port ${port}`)
+    console.log(`Manufacturer Website Server is Listening on port ${port}`)
 })
